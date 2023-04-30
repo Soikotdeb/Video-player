@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <title>Animation TV</title>
+    <style>
+      #player {
+        width: 100%;
+        height: 660px;
+        background-color: #000;
+        position: relative;
+        margin: 0 auto;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      #videoPlayer {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      #playButton {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80px;
+        height: 80px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+
+      #playButton:hover {
+        background-color: rgba(255, 255, 255, 0.8);
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+
+      #playButton svg {
+        width: 50%;
+        height: 50%;
+        fill: #000;
+      }
+
+      #videoUpload {
+        display: block;
+        margin: 10px auto;
+      }
+
+      /* Mobile Styles */
+      @media (max-width: 767px) {
+        #player {
+          height: 300px;
+        }
+      }
+
+      /* Tablet Styles */
+      @media (min-width: 768px) and (max-width: 1023px) {
+        #player {
+          height: 500px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="player">
+      <video id="videoPlayer" width="640" height="360" controls>
+        <source src="" type="video/mp4">
+        <source src="" type="video/webm">
+        Your browser does not support the video tag.
+      </video>
+
+      <div id="playButton">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="20,10 70,50 20,90" />
+        </svg>
+      </div>
+    </div>
+    <input type="file" id="videoUpload" accept="video/*">
+
+    <script>
+      const videoPlayer = document.getElementById("videoPlayer");
+      const playButton = document.getElementById("playButton");
+      const videoUpload = document.getElementById("videoUpload");
+
+      playButton.addEventListener("click", function() {
+        videoPlayer.play();
+        playButton.style.display = "none";
+      });
+
+      videoPlayer.addEventListener("ended", function() {
+        playButton.style.display = "block";
+      });
+
+      videoUpload.addEventListener("change", function() {
+        const file = this.files[0];
+        const type = file.type;
+        const videoSource = document.createElement("source");
+
+        if (type.indexOf("mp4") >= 0) {
+          videoSource.src = URL.createObjectURL(file);
+          videoSource.type = "video/mp4";
+        } else if (type.indexOf("webm") >= 0) {
+          videoSource.src = URL.createObjectURL(file);
+          videoSource.type = "video/webm";
+        }
+        
+        videoPlayer.innerHTML = "";
+        videoPlayer.appendChild(videoSource);
+        videoPlayer.load();
+        playButton.style.display = "block";
+      });
+     
+    </script>
+ 
+      
+      
+    <script src="/tv.js"></script>
+  </body>
+</html>
+
+
+
